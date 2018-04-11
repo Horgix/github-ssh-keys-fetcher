@@ -1,0 +1,29 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: "Get Github organization members"
+      set_fact:
+        users: "{{ lookup('github_team_members',
+                            api_key=github_api_key,
+                            github_org=github_org,
+                            github_team=github_team,
+                            wantlist=True) }}"
+
+    - name: "Debug - display Github organization members"
+      debug:
+        msg: "{{ item }}"
+      with_items: "{{ users }}"
+
+    - name: "Get Github organization members SSH public keys"
+      set_fact:
+        pubkeys: "{{ pubkeys|default({}) | combine( {item: lookup('github_ssh_pubkeys',
+                                                                    api_key=github_api_key,
+                                                                    login=item,
+                                                                    wantlist=True) } ) }}"
+      with_items: "{{ users }}"
+
+    - name: "Debug - display SSH public keys"
+      debug:
+        msg: "{{ item.key }}"
+      with_dict: "{{ pubkeys }}"
