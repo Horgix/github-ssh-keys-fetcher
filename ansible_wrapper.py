@@ -61,7 +61,8 @@ class Options(object):
 
 
 class PlaybookRunner(object):
-    def __init__(self, playbook, verbosity=0):
+    def __init__(self, playbook, extra_vars, verbosity=0):
+        self.extra_vars = extra_vars
         self.options = Options()
         self.options.verbosity = verbosity
         self.options.connection = 'local'  # Need a connection type "smart" or "ssh"
@@ -104,6 +105,7 @@ class PlaybookRunner(object):
                                                 inventory=self.inventory)
 
         self.variable_manager.set_inventory(self.inventory)
+        self.variable_manager.extra_vars = self.extra_vars
 
         # Playbook to run. Assumes it is
         # local to this python file
