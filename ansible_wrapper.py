@@ -130,15 +130,7 @@ class PlaybookRunner(object):
         for h in hosts:
             t = stats.summarize(h)
             if t['unreachable'] > 0 or t['failures'] > 0:
-                run_success = False
-
-        # Dirty hack to send callback to save logs with data we want
-        # Note that function "record_logs" is one I created and put into
-        # the playbook callback file
-        self.pbex._tqm.send_callback(
-            'record_logs',
-            success=run_success
-        )
+                return None
 
         # Remove created temporary files
         os.remove(self.hosts.name)
