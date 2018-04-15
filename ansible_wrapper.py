@@ -90,8 +90,7 @@ class PlaybookRunner(object):
         self.variable_manager.set_inventory(self.inventory)
         self.variable_manager.extra_vars = self.extra_vars
 
-        # Playbook to run. Assumes it is
-        # local to this python file
+        # Playbook to run. Assumes it is local to this python file
         pb_dir = os.path.dirname(__file__)
         playbook = "%s/%s" % (pb_dir, playbook)
 
@@ -107,6 +106,7 @@ class PlaybookRunner(object):
     def run(self):
         # Results of PlaybookExecutor
         self.pbex.run()
+        # noinspection PyProtectedMember
         stats = self.pbex._tqm._stats
 
         hosts = sorted(stats.processed.keys())
