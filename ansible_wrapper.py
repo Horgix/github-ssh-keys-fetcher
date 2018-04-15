@@ -1,5 +1,4 @@
 import os
-from tempfile import NamedTemporaryFile
 from ansible.inventory.manager import InventoryManager
 from ansible.vars.manager import VariableManager
 from ansible.parsing.dataloader import DataLoader
@@ -81,23 +80,6 @@ class PlaybookRunner(object):
         self.loader = DataLoader()
         # self.loader.set_vault_password(os.environ['VAULT_PASS'])
 
-        # Parse hosts, I haven't found a good way to
-        # pass hosts in without using a parsed template :(
-        # (Maybe you know how?)
-        self.hosts = NamedTemporaryFile(delete=False)
-        #        self.hosts.write("""[run_hosts]
-        # %s
-        # """ % hostnames)
-        self.hosts.close()
-
-        # This was my attempt to pass in hosts directly.
-        # 
-        # Also Note: In py2.7, "isinstance(foo, str)" is valid for
-        #            latin chars only. Luckily, hostnames are 
-        #            ascii-only, which overlaps latin charset
-        ## if isinstance(hostnames, str):
-        ##     hostnames = {"customers": {"hosts": [hostnames]}}
-
         # Set inventory, using most of above objects
         self.inventory = InventoryManager(loader=self.loader, sources="localhost,")
         # All the variables from all the various places
@@ -126,15 +108,8 @@ class PlaybookRunner(object):
         self.pbex.run()
         stats = self.pbex._tqm._stats
 
-        # Test if success for record_logs
-        run_success = True
         hosts = sorted(stats.processed.keys())
         for h in hosts:
             t = stats.summarize(h)
             if t['unreachable'] > 0 or t['failures'] > 0:
-                return None
-
-        # Remove created temporary files
-        os.remove(self.hosts.name)
-
-        return stats
+                raise Exception("Had some failure")
