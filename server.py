@@ -1,5 +1,5 @@
 from ansible_wrapper import PlaybookRunner
-from flask import Flask, jsonify, abort, make_response, request
+from flask import Flask, jsonify, abort, make_response
 from os import environ
 
 app = Flask(__name__)
