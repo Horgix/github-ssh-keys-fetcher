@@ -1,0 +1,9 @@
+[submodule "external_plugins/github_ssh_pubkeys"]
+	path = external_plugins/github_ssh_pubkeys
+	url = git@github.com:Horgix/ansible-lookup-plugin-github_ssh_pubkeys.git
+[submodule "external_plugins/github_org_members"]
+	path = external_plugins/github_org_members
+	url = git@github.com:Horgix/ansible-lookup-plugin-github_org_members.git
+[submodule "external_plugins/github_team_members"]
+	path = external_plugins/github_team_members
+	url = git@github.com:Horgix/ansible-lookup-plugin-github_team_members.git
