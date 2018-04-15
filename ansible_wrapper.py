@@ -60,7 +60,7 @@ class Options(object):
 
 
 class PlaybookRunner(object):
-    def __init__(self, playbook, extra_vars, verbosity=0):
+    def __init__(self, playbook, extra_vars, check_mode=True, verbosity=0):
         self.extra_vars = extra_vars
         self.options = Options()
         self.options.verbosity = verbosity
@@ -68,6 +68,7 @@ class PlaybookRunner(object):
         self.options.become = True
         self.options.become_method = 'sudo'
         self.options.become_user = 'root'
+        self.options.check = check_mode
 
         # Set global verbosity
         self.display = Display()
