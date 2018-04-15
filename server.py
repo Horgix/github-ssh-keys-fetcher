@@ -8,6 +8,7 @@ app = Flask(__name__)
 GITHUB_API_KEY = environ.get('GITHUB_API_KEY')
 GITHUB_ORG = environ.get('GITHUB_ORG')
 GITHUB_TEAM = environ.get('GITHUB_TEAM')
+CHECK_MODE = bool(environ.get('CHECK_MODE', True))
 
 
 @app.route('/', methods=['POST'])
@@ -19,11 +20,15 @@ def refresh():
             "github_org": GITHUB_ORG,
             "github_team": GITHUB_TEAM
         },
+        check_mode=CHECK_MODE,
         verbosity=0
     )
-    stats = runner.run()
-    if stats is None:
-        raise Exception("WUT")
+    try:
+        runner.run()
+    except Exception as e:
+        print(e)
+        abort(500, jsonify({'result': 'failed'}))
+    return make_response(jsonify({'result': 'success'}))
 
 
 if __name__ == '__main__':
