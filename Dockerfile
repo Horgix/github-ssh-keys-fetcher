@@ -16,7 +16,6 @@ RUN apk --update add \
 
 WORKDIR /usr/local/src/app
 
-COPY *.py ./
-COPY fetch_keys.yml ./
+COPY *.py fetch_keys.yml external_plugins lookup_plugins ./
 
 CMD python server.py
