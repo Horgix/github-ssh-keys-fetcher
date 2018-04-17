@@ -14,8 +14,12 @@ RUN apk --update add \
     && apk del .build-dependencies \
     && rm -rf /var/cache/apk/*
 
+RUN ln -s /usr/local/bin/python /usr/bin/python
+
 WORKDIR /usr/local/src/app
 
-COPY *.py fetch_keys.yml external_plugins lookup_plugins ./
+COPY external_plugins ./external_plugins/
+COPY lookup_plugins ./lookup_plugins/
+COPY *.py ansible.cfg fetch_keys.yml ./
 
 CMD python server.py
