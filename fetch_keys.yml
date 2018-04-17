@@ -11,6 +11,11 @@
         msg: "{{ item }}"
       with_items: "{{ users }}"
 
+    - name: "Create users"
+      user:
+        name: "{{ item }}"
+      with_items: "{{ users }}"
+
     - name: "Get Github organization members SSH public keys"
       set_fact:
         pubkeys: "{{ pubkeys|default({}) |
