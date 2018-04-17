@@ -13,7 +13,7 @@
 
     - name: "Create users"
       user:
-        name: "{{ item }}"
+        name: "{{ item|lower }}"
       with_items: "{{ users }}"
 
     - name: "Get Github organization members SSH public keys"
