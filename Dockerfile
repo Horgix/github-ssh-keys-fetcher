@@ -5,6 +5,7 @@ COPY requirements.txt /requirements.txt
 RUN apk --update add \
       openssl \
       ca-certificates \
+      shadow \
     && apk --update add --virtual .build-dependencies \
       build-base              \
       python-dev              \
