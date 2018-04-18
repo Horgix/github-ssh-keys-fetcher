@@ -19,3 +19,5 @@ do
   cp /etc/${file} /host_etc/${file}
   #cp /etc/${file}.original /etc/${file}
 done
+
+exit 0
