@@ -24,7 +24,16 @@
                                               wantlist=True) } ) }}"
       with_items: "{{ users }}"
 
-    - name: "Debug - display SSH public keys"
-      debug:
-        msg: "{{ item.key }}"
+    - name: "Ensure .ssh directory exist"
+      file:
+        path: "/home/{{ item }}/.ssh"
+        state:  directory
+        owner:  "{{ item }}"
+        group:  "{{ item }}"
+        mode: "0600"
+
+    - name: "Define authorized keys"
+      template:
+        src: authorized_keys.j2
+        dest: "/home/{{ item.key }}/.ssh/authorized_keys"
       with_dict: "{{ pubkeys }}"
