@@ -4,7 +4,7 @@
   tasks:
     - name: "Get Github organization members"
       set_fact:
-        users: "{{ lookup('github_team_members', wantlist=True) }}"
+        users: "{{ lookup('github_team_members', wantlist=True)|map('lower')|list }}"
 
     - name: "Debug - display Github organization members"
       debug:
@@ -13,7 +13,7 @@
 
     - name: "Create users"
       user:
-        name: "{{ item|lower }}"
+        name: "{{ item }}"
       with_items: "{{ users }}"
 
     - name: "Get Github organization members SSH public keys"
@@ -31,6 +31,7 @@
         owner:  "{{ item }}"
         group:  "{{ item }}"
         mode: "0600"
+      with_items: "{{ users }}"
 
     - name: "Define authorized keys"
       template:
