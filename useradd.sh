@@ -17,5 +17,5 @@ done
 for file in ${impacted_files}
 do
   cp /etc/${file} /host_etc/${file}
-  cp /etc/${file}.original /etc/${file}
+  #cp /etc/${file}.original /etc/${file}
 done
