@@ -21,9 +21,10 @@ WORKDIR /usr/local/src/app
 
 COPY external_plugins ./external_plugins/
 COPY lookup_plugins ./lookup_plugins/
-COPY *.py ansible.cfg fetch_keys.yml ./
+COPY *.py ansible.cfg fetch_keys.yml authorized_keys.j2 ./
 COPY useradd.sh /usr/local/bin/useradd
+#COPY chown.sh /usr/local/bin/chown
 
-RUN chmod +x /usr/local/bin/useradd
+RUN chmod +x /usr/local/bin/useradd #/usr/local/bin/chown
 
 CMD python server.py
