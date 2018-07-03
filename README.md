@@ -15,3 +15,10 @@ This could be notified directly by [Github
 webhooks](https://developer.github.com/webhooks/), especially since
 [Organization webhooks were
 added](https://developer.github.com/changes/2014-12-03-preview-the-new-organization-webhooks-api/)
+
+
+## Backups
+
+Backup `/etc/passwd`, `/etc/group` and `/etc/shadow` files with Ansible instead
+of the current wrapper shell scripts?
+
