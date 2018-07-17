@@ -69,3 +69,21 @@
         group:  "{{ item.key }}"
         mode: "0644"
       with_dict: "{{ pubkeys }}"
+
+    - name: "Create user personal sandbox structure"
+      file:
+        path:   "/srv/sandbox-private/{{ item }}"
+        state:  directory
+        owner:  "{{ item }}"
+        group:  "{{ item }}"
+        mode:   "0700"
+      with_items: "{{ users }}"
+
+    - name: "Create workspace symlink"
+      file:
+        src:    "/srv/sandbox-private/{{ item }}"
+        dest:   "/home/{{ item }}/workspace"
+        state:  link
+        owner:  "{{ item }}"
+        group:  "{{ item }}"
+      with_items: "{{ users }}"
