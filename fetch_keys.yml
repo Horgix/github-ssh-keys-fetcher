@@ -5,15 +5,14 @@
     - name: "Get Github organization members"
       set_fact:
         users: "{{ lookup('github_team_members', wantlist=True)|map('lower')|list }}"
+        impacted_files:
+          - "passwd"
+          - "group"
+          - "shadow"
 
     - name: "Debug - display Github organization members"
       debug:
         msg: "{{ item }}"
-      with_items: "{{ users }}"
-
-    - name: "Create users"
-      user:
-        name: "{{ item }}"
       with_items: "{{ users }}"
 
     - name: "Get Github organization members SSH public keys"
@@ -23,6 +22,35 @@
                                               login=item,
                                               wantlist=True) } ) }}"
       with_items: "{{ users }}"
+
+    - name: "Boilerplate - Backup impacted files"
+      copy:
+        remote_src: yes
+        src:  "/etc/{{ item }}"
+        dest: "/etc/{{ item }}.ansible-original"
+      with_items: "{{ impacted_files }}"
+
+    - name: "Boilerplate - Use host impacted files"
+      copy:
+        remote_src: yes
+        src:  "/host_etc/{{ item }}"
+        dest: "/etc/{{ item }}"
+      with_items: "{{ impacted_files }}"
+
+    - name: "Create users"
+      user:
+        name: "{{ item }}"
+        append: yes
+        groups:
+          - xebians
+      with_items: "{{ users }}"
+
+    - name: "Boilerplate - Apply modification to host impacted files"
+      copy:
+        remote_src: yes
+        src:  "/etc/{{ item }}"
+        dest: "/host_etc/{{ item }}"
+      with_items: "{{ impacted_files }}"
 
     - name: "Ensure .ssh directory exist"
       file:
