@@ -43,6 +43,11 @@
         append: yes
         groups:
           - xebians
+        # TODO: we should probably not be forcing everyone to use bash and
+        # override their choice. We should configure /etc/default/useradd
+        # instead but for now this will be painful since it will be the one in
+        # the container that will be used and not the one on the host.
+        shell: "/bin/bash"
       with_items: "{{ users }}"
 
     - name: "Boilerplate - Apply modification to host impacted files"
