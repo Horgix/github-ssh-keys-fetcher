@@ -12,7 +12,7 @@ app = Flask(__name__)
 GITHUB_API_KEY = environ.get('GITHUB_API_KEY')
 GITHUB_ORG = environ.get('GITHUB_ORG')
 GITHUB_TEAM = environ.get('GITHUB_TEAM')
-CHECK_MODE = bool(strtobool(environ.get('CHECK_MODE', 'True')))
+CHECK_MODE = strtobool(environ.get('CHECK_MODE', 'True'))
 
 log.setLevel(logging.DEBUG)
 
