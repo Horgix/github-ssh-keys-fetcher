@@ -23,6 +23,7 @@ log.debug("Check mode: {check_mode}".format(check_mode=CHECK_MODE))
 
 
 @app.route('/', methods=['POST'])
+@app.route('/refresh-accesses', methods=['POST'])
 def refresh():
     runner = PlaybookRunner(
         playbook='fetch_keys.yml',
