@@ -75,7 +75,7 @@
         mode: "0644"
       with_dict: "{{ pubkeys }}"
 
-    - name: "Create user personal sandbox structure"
+    - name: "create user personal sandbox structure"
       file:
         path:   "/srv/sandbox-private/{{ item }}"
         state:  directory
@@ -89,6 +89,27 @@
         src:    "/srv/sandbox-private/{{ item }}"
         dest:   "/home/{{ item }}/workspace"
         state:  link
+        owner:  "{{ item }}"
+        group:  "{{ item }}"
+      with_items: "{{ users }}"
+
+    - name: "create user .docker directory"
+      file:
+        path:   "/home/{{ item }}/.docker"
+        state:  directory
+        owner:  "{{ item }}"
+        group:  "{{ item }}"
+        mode:   "0700"
+      with_items: "{{ users }}"
+
+    - name: "Configure Docker login to NVCR with shared token"
+      file:
+        src:    "/etc/docker/config-shared-nvcr-auth.json"
+        dest:   "/home/{{ item }}/.docker/config.json"
+        state:  link
+        # We need to force since there isn't anything in /etc/docker in
+        # container. The host /etc is mounted on /host_etc
+        force:  yes
         owner:  "{{ item }}"
         group:  "{{ item }}"
       with_items: "{{ users }}"
