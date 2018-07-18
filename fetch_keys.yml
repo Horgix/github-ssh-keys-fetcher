@@ -43,6 +43,7 @@
         append: yes
         groups:
           - xebians
+          - docker
         # TODO: we should probably not be forcing everyone to use bash and
         # override their choice. We should configure /etc/default/useradd
         # instead but for now this will be painful since it will be the one in
